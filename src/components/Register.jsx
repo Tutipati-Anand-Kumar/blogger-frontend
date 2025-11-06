@@ -1,26 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdDriveFileRenameOutline, MdEmail } from "react-icons/md";
 import { FaEye, FaEyeSlash, FaLock, FaLockOpen } from "react-icons/fa";
 import { validatePassword } from "val-pass";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../slice";
+import { Cropper } from "react-advanced-cropper";
+import 'react-advanced-cropper/dist/style.css';
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const cropperRef = useRef(null);
+
+
   const [details, setDetails] = useState({
-    fullname: "",
+    username: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const [show, setShow] = useState(true);
   const [passerror, setPassError] = useState([]);
   const [passMatchError, setPassMatchError] = useState(false);
-  const [profilePreview, setProfilePreview] = useState(null);
-
+  const [profilePhoto, setprofilePhoto] = useState(null);
+  const [showCropper, setShowCropper] = useState(false);
 
   const handleNameChange = (e) => {
-    setDetails({ ...details, fullname: e.target.value });
+    setDetails({ ...details, username: e.target.value });
   };
 
   const handleEmailChange = (e) => {
@@ -64,9 +71,9 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const { fullname, email, password, confirmPassword } = details;
+    const { username, email, password, confirmPassword } = details;
 
-    if (!fullname.trim() || !email.trim() || !password.trim()) {
+    if (!username.trim() || !email.trim() || !password.trim()) {
       toast.error("Please fill all fields ❌");
       return;
     }
@@ -89,6 +96,11 @@ const Register = () => {
 
     toast.success("Registered successfully ✅");
     console.log("Form submitted:", details);
+    dispatch(registerUser(details))
+
+    setDetails({ username: "", email: "", password: "", confirmPassword: "", profilePhoto: "" });
+    setprofilePhoto(null);
+
   };
 
   return (
@@ -107,7 +119,7 @@ const Register = () => {
                 type="text"
                 placeholder="Full Name"
                 className="w-full pr-10 pl-3 py-2 border border-purple-300 rounded-md focus:ring-2 focus:ring-purple-400 outline-none"
-                value={details.fullname}
+                value={details.username}
                 onChange={handleNameChange}
               />
               <MdDriveFileRenameOutline className="absolute right-3 top-2.5 text-purple-500 text-xl" />
@@ -198,9 +210,9 @@ const Register = () => {
         {/* Right side - Profile upload */}
 <div className="w-full md:w-1/2 flex flex-col items-center justify-center">
   <div className="w-28 h-28 border-2 border-purple-400 rounded-full flex items-center justify-center overflow-hidden bg-white/30">
-    {profilePreview ? (
+    {profilePhoto ? (
       <img
-        src={profilePreview}
+        src={profilePhoto}
         alt="Profile Preview"
         className="w-full h-full object-cover"
       />
@@ -216,7 +228,7 @@ const Register = () => {
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          d="M15.75 7.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a8.25 8.25 0 1115 0H4.5z"
+          d="M15.75 4.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 22.25a8.25 8.25 0 1115 0H4.5z"
         />
       </svg>
     )}
@@ -228,14 +240,14 @@ const Register = () => {
     id="profileUpload"
     className="hidden"
     onChange={(e) => {
-      const file = e.target.files[0];
-     if (file) {
+    const file = e.target.files[0];
+      if (file) {
         const previewUrl = URL.createObjectURL(file);
-        setProfilePreview(previewUrl);
-        setDetails({ ...details, profileImage: file, profilePreview: previewUrl });
+        setprofilePhoto(previewUrl); 
+        setShowCropper(true); 
       }
-
     }}
+
   />
 
   <label
@@ -244,6 +256,37 @@ const Register = () => {
   >
     Upload Profile
   </label>
+
+  {showCropper && (
+  <div className="mt-4 w-40 h-40 border rounded-md overflow-hidden flex flex-col items-center">
+    <Cropper
+      ref={cropperRef}
+      src={profilePhoto}
+      className="cropper"
+      stencilProps={{ aspectRatio: 1 }}
+    />
+    <button
+      type="button"
+      className="mt-2 bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1 rounded-md"
+      onClick={() => {
+        const cropper = cropperRef.current;
+        if (cropper) {
+          const canvas = cropper.getCanvas();
+          if (canvas) {
+            const croppedUrl = canvas.toDataURL("image/jpeg");
+            setDetails({ ...details, profilePhoto: croppedUrl });
+            setprofilePhoto(croppedUrl);
+            toast.success("Crop saved ✅");
+            setShowCropper(false);  
+          }
+        }
+      }}
+    >
+      Save Crop
+    </button>
+  </div>
+)}
+
 </div>
 
       </div>
