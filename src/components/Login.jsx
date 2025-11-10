@@ -23,12 +23,12 @@ const Login = () => {
     const { email, password } = details;
 
     if (!email.trim() || !password.trim()) {
-      toast.error("Please fill all fields ❌");
+      toast.error("Please fill all fields");
       return;
     }
 
     if (!email.includes("@gmail.com")) {
-      toast.error("Email must include @gmail.com ❌");
+      toast.error("Email must include @gmail.com");
       return;
     }
 
@@ -37,7 +37,7 @@ const Login = () => {
       toast.success("Login successful ✅");
       console.log("Server response:", result);
     } catch (err) {
-      toast.error(err || "Login failed ❌");
+      toast.error(err || "Login failed");
       // console.error("Login error:", err);
     }
 

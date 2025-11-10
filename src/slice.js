@@ -13,7 +13,7 @@ export const registerUser = createAsyncThunk(
   "user/register",
   async (payload, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post("http://192.168.0.13:5000/api/users/register", payload);
+      const { data } = await axios.post("http://192.168.0.86:5000/api/users/register", payload);
       return data;
     } catch (err) {
       const message = err.response?.data?.message || err.message || "Registration failed";
@@ -27,7 +27,7 @@ export const loginUser = createAsyncThunk(
   "user/login",
   async (payload, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post("http://192.168.0.13:5000/api/users/login", payload);
+      const { data } = await axios.post("http://192.168.0.86:5000/api/users/login", payload);
       return data;
     } catch (err) {
       const message = err.response?.data?.message || err.message || "Login failed";

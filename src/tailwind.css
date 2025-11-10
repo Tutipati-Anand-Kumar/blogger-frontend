@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+.advanced-cropper,
+.advanced-cropper__background,
+.advanced-cropper__image {
+  background-color: transparent !important;
+}
+
+::-webkit-scrollbar{
+    display: none;
+}
