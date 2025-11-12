@@ -6,7 +6,7 @@ import { RxCrossCircled } from "react-icons/rx";
 import { validatePassword } from "val-pass";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { registerUser } from "../slice";
+import { registerUser } from "../redux/slices/authSlice";
 import { Cropper } from "react-advanced-cropper";
 import "react-advanced-cropper/dist/style.css";
 import { Link, useNavigate } from "react-router-dom";

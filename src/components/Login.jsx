@@ -4,7 +4,7 @@ import { FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../slice";
+import { loginUser } from "../redux/slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {

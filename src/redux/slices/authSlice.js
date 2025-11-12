@@ -3,17 +3,20 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const initialState = {
-  user: null,
+  auth: null,
   status: "idle",
   error: null,
 };
 
-// ✅ Register user
+const BASE_URL = "http://192.168.0.11:5000/api/"
+
 export const registerUser = createAsyncThunk(
-  "user/register",
+  "auth/register",
   async (payload, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post("http://192.168.0.86:5000/api/users/register", payload);
+      const { data } = await axios.post(`${BASE_URL}users/register`, payload);
+      // console.log(data)
+      localStorage.setItem('authtoken', data.token);
       return data;
     } catch (err) {
       const message = err.response?.data?.message || err.message || "Registration failed";
@@ -22,24 +25,23 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-// ✅ Login user
 export const loginUser = createAsyncThunk(
-  "user/login",
+  "auth/login",
   async (payload, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post("http://192.168.0.86:5000/api/users/login", payload);
+      const { data } = await axios.post(`${BASE_URL}users/login`, payload);
+      localStorage.setItem('authtoken', data.token);
       return data;
     } catch (err) {
       const message = err.response?.data?.message || err.message || "Login failed";
       // return rejectWithValue(message);
       return rejectWithValue(message || "");
-
     }
   }
 );
 
-const userSlice = createSlice({
-  name: "user",
+const authSlice= createSlice({
+  name: "auth",
   initialState,
   reducers: {
     logout: (state) => {
@@ -47,6 +49,7 @@ const userSlice = createSlice({
       localStorage.removeItem("authToken");
     },
   },
+  
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
@@ -78,5 +81,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout } = userSlice.actions;
-export default userSlice.reducer;
+export const { logout } = authSlice.actions;
+export default authSlice.reducer;
