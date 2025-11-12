@@ -6,9 +6,10 @@ const initialState = {
   auth: null,
   status: "idle",
   error: null,
+  isAuthenticated: !!localStorage.getItem("authtoken"), 
 };
 
-const BASE_URL = "http://192.168.0.11:5000/api/"
+const BASE_URL = "http://192.168.0.37:5000/api/"
 
 export const registerUser = createAsyncThunk(
   "auth/register",
@@ -40,6 +41,11 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const logoutUser = createAsyncThunk('auth/logout', async (_, { dispatch }) => {
+  localStorage.removeItem('token');
+  dispatch(logout());
+});
+
 const authSlice= createSlice({
   name: "auth",
   initialState,
@@ -60,6 +66,7 @@ const authSlice= createSlice({
         state.status = "succeeded";
         state.user = action.payload;
         state.error = null;
+        state.isAuthenticated = true; 
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.status = "failed";
@@ -73,11 +80,15 @@ const authSlice= createSlice({
         state.status = "succeeded";
         state.user = action.payload;
         state.error = null;
+        state.isAuthenticated = true; 
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload || action.error.message;
-      });
+      }).addCase(logoutUser.fulfilled, (state) => {
+          state.user = null;
+          state.isAuthenticated = false; // ✅ mark logged out
+        });
   },
 });
 

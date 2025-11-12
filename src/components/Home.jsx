@@ -2,9 +2,17 @@
 import { FaUser, FaHeart, FaCommentAlt, FaPlus, FaBell } from "react-icons/fa";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Logout from './Logout';
 
 export default function Home() {
     const navigate = useNavigate();
+    const [showLogout, setShowLogout] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("authtoken");
+    window.location.href = "/login"; 
+  };
+
     
   const posts = [
     { id: 1, name: "John Doe", date: "Nov 11, 2025", comments: 21, likes: 213 },
@@ -33,10 +41,26 @@ export default function Home() {
           <a href="#" className="text-gray-700 hover:text-purple-600 transition">Home</a>
           <a href="#" className="text-gray-700 hover:text-purple-600 transition">About</a>
 
-          <button className="flex items-center gap-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white px-3 py-1.5 rounded-lg hover:shadow-md transition" onClick={navigate('/createBlog')}>
+          <button className="flex items-center gap-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white px-3 py-1.5 rounded-lg hover:shadow-md transition" onClick={()=>{
+            navigate('/')
+          }}>
             <FaPlus /> Create
           </button>
 
+          <button
+            onClick={() => setShowLogout(true)}
+            className="px-6 py-2 font-semibold text-white rounded-lg bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 hover:from-purple-700 hover:via-pink-600 hover:to-sky-600 transition-all duration-300"
+          >
+            Logout
+          </button>
+
+          {showLogout && (
+            <Logout
+              onConfirm={handleLogout}
+              onCancel={() => setShowLogout(false)}
+            />
+          )}
+          
           <FaBell className="text-xl text-gray-600 hover:text-purple-600 cursor-pointer transition" />
 
           <div className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:scale-105 transition">

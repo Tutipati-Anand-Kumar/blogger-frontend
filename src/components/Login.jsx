@@ -35,6 +35,7 @@ const Login = () => {
     try {
       const result = await dispatch(loginUser(details)).unwrap();
       toast.success("Login successful ✅");
+      navigate("/");
       console.log("Server response:", result);
     } catch (err) {
       toast.error(err || "Login failed");
@@ -96,7 +97,7 @@ const Login = () => {
         <div className="text-center mt-5 text-gray-700 font-medium">
           Don’t have an account?{" "}
           <Link
-            to="/"
+            to="/register"
             className="text-pink-600 hover:text-pink-700 transition-all duration-300 underline"
           >
             Register here
