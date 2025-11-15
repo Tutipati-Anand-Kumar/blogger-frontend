@@ -46,7 +46,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[url('./RobowaveRegister.jpg')] bg-cover bg-center">
+    <div className="min-h-screen flex items-center justify-center bg-[url('./image1.png')] bg-cover bg-center">
       <div className="bg-white/20 backdrop-blur-xl shadow-2xl border border-white/30 rounded-2xl p-8 w-[90%] max-w-[420px] flex flex-col items-center justify-center">
         <h2 className="text-3xl font-semibold text-center bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 bg-clip-text text-transparent mb-6">
           Login
