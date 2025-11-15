@@ -72,7 +72,7 @@ function Home() {
           <FaBell className="text-xl text-gray-600 hover:text-purple-600 cursor-pointer" />
 
           <div className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 to-blue-500 text-white">
-            <FaUser />
+            <FaUser  onClick={()=>{navigate("/profile")}}/>
           </div>
         </div>
       </nav>

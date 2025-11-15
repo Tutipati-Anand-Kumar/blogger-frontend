@@ -4,6 +4,7 @@ import Login from "../components/Login";
 import Home from "../components/Home";
 import PrivateRoute from "./PrivateRoute";
 import CreateArticle from "../components/CreateArticle";
+import Profile from "../components/Profile";
 
 const routes = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const routes = createBrowserRouter([
     <PrivateRoute>
       <CreateArticle />
     </PrivateRoute>
+  },
+  {
+    path:"/profile",
+    element:<Profile/>
   }
 
 ]);
