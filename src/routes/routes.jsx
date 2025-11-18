@@ -5,6 +5,9 @@ import Home from "../components/Home";
 import PrivateRoute from "./PrivateRoute";
 import CreateArticle from "../components/CreateArticle";
 import Profile from "../components/Profile";
+import About from "../components/About";
+import Notification from "../components/Notification";
+
 
 const routes = createBrowserRouter([
   {
@@ -30,6 +33,14 @@ const routes = createBrowserRouter([
   {
     path:"/profile",
     element:<Profile/>
+  },
+  {
+    path:"/about",
+    element:<About/>
+  },
+  {
+    path:"/notifications",
+    element:<Notification/>
   }
 
 ]);
