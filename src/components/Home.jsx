@@ -3,15 +3,18 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllArticles } from "../redux/slices/articleSlice";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logout from "./Logout";
 
 function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
 
   const { articles, status, error } = useSelector((state) => state.articles);
   const [showLogout, setShowLogout] = useState(false);
+
+
   console.log(articles);
   
 
@@ -49,7 +52,11 @@ function Home() {
 
         <div className="flex items-center gap-4">
           <span className="text-gray-700 hover:text-purple-600 cursor-pointer">Home</span>
-          <span className="text-gray-700 hover:text-purple-600 cursor-pointer">About</span>
+          {/* <span className="text-gray-700 hover:text-purple-600 cursor-pointer">About</span> */}
+          <Link to="/about">About</Link>
+
+
+
 
           <button
             onClick={() => navigate("/create-article")}
@@ -69,7 +76,7 @@ function Home() {
             <Logout onConfirm={handleLogout} onCancel={() => setShowLogout(false)} />
           )}
 
-          <FaBell className="text-xl text-gray-600 hover:text-purple-600 cursor-pointer" />
+          <FaBell className="text-xl text-gray-600 hover:text-purple-600 cursor-pointer" onClick={()=>{navigate("/notifications")}} />
 
           <div className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 to-blue-500 text-white">
             <FaUser  onClick={()=>{navigate("/profile")}}/>
@@ -144,6 +151,10 @@ function Home() {
           );
         })}
       </div>
+ 
+    
+
+
     </div>
   );
 }
