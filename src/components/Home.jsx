@@ -1,4 +1,4 @@
-import { FaUser, FaHeart, FaCommentAlt, FaPlus, FaBell } from "react-icons/fa";
+import { FaUser, FaHeart, FaCommentAlt, FaPlus, FaBell ,FaHome} from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllArticles } from "../redux/slices/articleSlice";
@@ -44,30 +44,82 @@ function Home() {
   console.log(articleList)
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-50 text-gray-800 font-sans">
+    <div className="min-h-screen bg-[url('./image1.png')] bg-cover bg-center text-gray-800 font-sans ">
 
       {/* Navbar */}
-      <nav className="flex items-center justify-between border-b bg-white/80 backdrop-blur-md px-6 py-3 shadow-sm sticky top-0 z-50">
-        <div className="w-32 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg"></div>
+      <nav className="flex items-center justify-between border-b bg-white/20 backdrop-blur-0.1px px-6 py-3 shadow-sm sticky top-0 z-50">
+        <div >
+          <svg
+  width="220"
+  height="48"
+  viewBox="0 0 220 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="BlogVerse logo"
+>
+  <title>BlogVerse</title>
 
-        <div className="flex items-center gap-4">
-          <span className="text-gray-700 hover:text-purple-600 cursor-pointer">Home</span>
-          {/* <span className="text-gray-700 hover:text-purple-600 cursor-pointer">About</span> */}
-          <Link to="/about">About</Link>
+  {/* Brand text */}
+  <g transform="translate(56,32)">
+    {/* "Blog" - bold */}
+    <text
+      x="0"
+      y="0"
+      fontFamily="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
+      fontWeight="700"
+      fontSize="24"
+      fill="purple"
+    >
+      Blog
+    </text>
 
+    {/* "Verse" - accent color and lighter weight */}
+    <text
+      x="52"
+      y="0"
+      fontFamily="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
+      fontWeight="500"
+      fontSize="24"
+      fill="#2563EB"
+    >
+      Verse
+    </text>
+  </g>
 
+  {/* subtle underline / flourish */}
+  <path
+    d="M56 36c18 0 36-2 58-8"
+    stroke="#2563EB"
+    strokeWidth="1.2"
+    strokeLinecap="round"
+    strokeOpacity="0.12"
+    fill="none"
+  />
+</svg>
 
+        </div>
 
+        <div className="flex items-center gap-8">
+          <div className="">
+            
+            <span className="flex flex-row items-center content-center gap-1 font-semibold text-gray-900 hover:text-blue-900 cursor-pointer" > <FaHome />Home</span>
+          </div>
+          <div>
+
+            <span className="text-gray-900 hover:text-blue-900 font-semibold cursor-pointer">About</span>
+          </div>
           <button
             onClick={() => navigate("/create-article")}
-            className="flex items-center gap-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white px-3 py-1.5 rounded-lg hover:shadow-md transition"
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-800 text-white h-[33px] w-[100px] px-3 py-1.5 rounded-lg hover:shadow-md transition"
           >
             <FaPlus /> Create
           </button>
 
           <button
             onClick={() => setShowLogout(true)}
-            className="px-6 py-2 font-semibold text-white rounded-lg bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 hover:scale-105"
+            // className="px-6 py-2 font-semibold text-white rounded-lg bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 hover:scale-105"
+             className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-purple-800 text-white h-[35px] w-[100px] px-3 py-1.5 rounded-lg hover:shadow-md transition font-semibold"
           >
             Logout
           </button>
@@ -78,7 +130,7 @@ function Home() {
 
           <FaBell className="text-xl text-gray-600 hover:text-purple-600 cursor-pointer" onClick={()=>{navigate("/notifications")}} />
 
-          <div className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 to-blue-500 text-white">
+          <div className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 to-blue-500 text-white ">
             <FaUser  onClick={()=>{navigate("/profile")}}/>
           </div>
         </div>

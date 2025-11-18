@@ -35,7 +35,7 @@ const Logout = ({ onConfirm, onCancel }) => {
           >
             No
           </button>
-        </div>
+        </div> 
       </motion.div>
     </div>
   );

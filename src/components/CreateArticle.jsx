@@ -33,7 +33,7 @@ const CreateArticle = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A2A43] to-[#0F4C5C] p-6">
+    <div className="min-h-screen flex items-center justify-center bg-[url('./image1.png')] bg-cover bg-center p-6">
       <div className="bg-white/10 backdrop-blur-xl shadow-xl rounded-xl p-8 w-full max-w-lg border border-white/20">
 
         <h2 className="text-3xl font-bold text-white text-center mb-6">
