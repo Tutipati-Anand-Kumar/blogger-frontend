@@ -22,7 +22,7 @@ const CreateArticle = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res =await dispatch(createArticle(form));
+    const res = await dispatch(createArticle(form));
 
     if (res?.meta?.requestStatus === "fulfilled") {
       toast.success("Article Created Successfully!");
@@ -34,9 +34,11 @@ const CreateArticle = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[url('./image1.png')] bg-cover bg-center p-6">
-      <div className="bg-white/10 backdrop-blur-xl shadow-xl rounded-xl p-8 w-full max-w-lg border border-white/20">
+      
+      {/* White clean card */}
+      <div className="bg-white shadow-2xl rounded-xl p-8 w-full max-w-lg border border-gray-200">
 
-        <h2 className="text-3xl font-bold text-white text-center mb-6">
+        <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">
           Create New Article
         </h2>
 
@@ -45,9 +47,10 @@ const CreateArticle = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          
           {/* Title */}
           <div>
-            <label className="text-white block mb-2">Title</label>
+            <label className="text-gray-700 block mb-2 font-medium">Title</label>
             <input
               type="text"
               name="title"
@@ -55,13 +58,13 @@ const CreateArticle = () => {
               value={form.title}
               onChange={handleChange}
               required
-              className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-300"
+              className="w-full p-3 rounded-lg bg-gray-100 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-400"
             />
           </div>
 
           {/* Content */}
           <div>
-            <label className="text-white block mb-2">Content</label>
+            <label className="text-gray-700 block mb-2 font-medium">Content</label>
             <textarea
               name="content"
               rows="5"
@@ -69,7 +72,7 @@ const CreateArticle = () => {
               value={form.content}
               onChange={handleChange}
               required
-              className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-300"
+              className="w-full p-3 rounded-lg bg-gray-100 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-400"
             ></textarea>
           </div>
 
@@ -77,7 +80,7 @@ const CreateArticle = () => {
           <button
             type="submit"
             disabled={status === "loading"}
-            className="w-full py-3 bg-teal-400 hover:bg-teal-300 text-black font-semibold rounded-lg transition"
+            className="w-full py-3 bg-teal-500 hover:bg-teal-400 text-white font-semibold rounded-lg transition"
           >
             {status === "loading" ? "Publishing..." : "Publish Article"}
           </button>
@@ -88,3 +91,6 @@ const CreateArticle = () => {
 };
 
 export default CreateArticle;
+
+
+

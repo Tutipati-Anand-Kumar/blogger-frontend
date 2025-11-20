@@ -3,12 +3,12 @@ import { motion } from "framer-motion";
 
 const Logout = ({ onConfirm, onCancel }) => {
   return (
-    <div className=" absolute right-140 top-70 flex items-center justify-center  backdrop-blur-sm z-50 ">
+    <div className=" absolute right-140 top-70 flex items-center justify-center   backdrop-sm z-50 ">
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.8, opacity: 0 }}
-        className="bg-white/20 backdrop-blur-2xl border border-white/30 rounded-2xl shadow-2xl p-8 w-[90%] max-w-[380px] text-center"
+        className="bg-white  border rounded-2xl shadow-2xl p-8 w-[90%] max-w-[380px] text-center"
       >
         <h2 className="text-2xl font-semibold mb-4 text-gray-900">
           Are you sure you want to Logout?
