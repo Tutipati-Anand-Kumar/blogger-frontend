@@ -1,26 +1,26 @@
-// import { FaUser, FaHeart, FaCommentAlt, FaPlus, FaBell ,FaHome} from "react-icons/fa";
+// import { FaUser, FaHeart, FaCommentAlt, FaPlus, FaBell, FaHome } from "react-icons/fa";
 // import { useState, useEffect } from "react";
 // import { useDispatch, useSelector } from "react-redux";
 // import { getAllArticles } from "../redux/slices/articleSlice";
 // import { toast } from "react-toastify";
-// import { Link, useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 // import Logout from "./Logout";
-// import Notification from './Notification';
+// import Notification from "./Notification";
 
 // function Home() {
 //   const navigate = useNavigate();
 //   const dispatch = useDispatch();
-  
 
 //   const { articles, status, error } = useSelector((state) => state.articles);
-//   const [showLogout, setShowLogout] = useState(false);
-//   const [showNotification ,setShowNotification] = useState(false);
 
-//   const toggleNotifications = () => {
-//     setShowNotification(!showNotification);
-//   };
-//   console.log(articles);
-  
+//   const [showLogout, setShowLogout] = useState(false);
+//   const [showNotification, setShowNotification] = useState(false);
+
+//   const [expandedComments, setExpandedComments] = useState({});
+//   const [commentInputs, setCommentInputs] = useState({});
+//   const [showCommentBox, setShowCommentBox] = useState({}); // NEW
+
+//   const toggleNotifications = () => setShowNotification(!showNotification);
 
 //   useEffect(() => {
 //     dispatch(getAllArticles());
@@ -44,177 +44,210 @@
 //     });
 //   };
 
+//   const toggleShowMore = (articleId) => {
+//     setExpandedComments((prev) => ({
+//       ...prev,
+//       [articleId]: !prev[articleId],
+//     }));
+//   };
+
+//   const toggleCommentBox = (articleId) => {
+//     setShowCommentBox((prev) => ({
+//       ...prev,
+//       [articleId]: !prev[articleId],
+//     }));
+//   };
+
+//   const handleCommentChange = (articleId, value) => {
+//     setCommentInputs((prev) => ({
+//       ...prev,
+//       [articleId]: value,
+//     }));
+//   };
+
+//   const addComment = (articleId) => {
+//     if (!commentInputs[articleId]?.trim()) return;
+
+//     const newComment = {
+//       id: Date.now(),
+//       text: commentInputs[articleId],
+//       time: new Date().toLocaleString("en-IN", {
+//         dateStyle: "medium",
+//         timeStyle: "short",
+//       }),
+//     };
+
+//     const articleIndex = articles.findIndex((a) => a._id === articleId);
+//     articles[articleIndex].comments.push(newComment);
+
+//     setCommentInputs((prev) => ({ ...prev, [articleId]: "" }));
+
+//     // Close comment box after sending
+//     setShowCommentBox((prev) => ({ ...prev, [articleId]: false }));
+
+//     toast.success("Comment added!");
+//   };
+
 //   const articleList = Array.isArray(articles) ? articles : [];
-//   console.log(articleList)
 
 //   return (
-//     <div className="min-h-screen  text-gray-800 font-sans bg-[url('./image1.png')] bg-cover bg-center">
+//     <div className="relative min-h-screen text-gray-800 font-sans bg-[url('./image1.png')] bg-cover bg-center">
 
-//       {/* Navbar */}
-//       <nav className="flex items-center justify-between border-b bg-white/20 backdrop-blur-md px-6 py-3 shadow-sm  sticky top-0 z-50">
-//         <div >
-//           <svg
-//   width="220"
-//   height="48"
-//   viewBox="0 0 220 48"
-//   fill="none"
-//   xmlns="http://www.w3.org/2000/svg"
-//   role="img"
-//   aria-label="BlogVerse logo"
-// >
-//   <title>BlogVerse</title>
+//       {/* APPLY BLUR WHEN LOGOUT POPUP IS OPEN */}
+//       <div className={`${showLogout ? "blur-sm pointer-events-none" : ""}`}>
 
-//   {/* Brand text */}
-//   <g transform="translate(56,32)">
-//     {/* "Blog" - bold */}
-//     <text
-//       x="0"
-//       y="0"
-//       fontFamily="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
-//       fontWeight="700"
-//       fontSize="24"
-//       fill="purple"
-//     >
-//       Blog
-//     </text>
+//         {/* NAVBAR */}
+//         <nav className="flex items-center justify-between border-b bg-white/20 backdrop-blur-md px-6 py-3 shadow-sm sticky top-0 z-40">
 
-//     {/* "Verse" - accent color and lighter weight */}
-//     <text
-//       x="52"
-//       y="0"
-//       fontFamily="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
-//       fontWeight="500"
-//       fontSize="24"
-//       fill="#2563EB"
-//     >
-//       Verse
-//     </text>
-//   </g>
-
-//   {/* subtle underline / flourish */}
-//   <path
-//     d="M56 36c18 0 36-2 58-8"
-//     stroke="#2563EB"
-//     strokeWidth="1.2"
-//     strokeLinecap="round"
-//     strokeOpacity="0.12"
-//     fill="none"
-//   />
-// </svg>
-
-//         </div>
-
-//         <div className="flex items-center gap-8">
-//           <div className="">
-            
-//             <span className="flex flex-row items-center content-center gap-1 font-semibold text-gray-900 hover:text-blue-900 cursor-pointer" > <FaHome />Home</span>
+//           <div>
+//             <svg width="220" height="48" viewBox="0 0 220 48" fill="none">
+//               <g transform="translate(56,32)">
+//                 <text x="0" y="0" fontFamily="Inter" fontWeight="700" fontSize="24" fill="purple">Blog</text>
+//                 <text x="52" y="0" fontFamily="Inter" fontWeight="500" fontSize="24" fill="#2563EB">Verse</text>
+//               </g>
+//               <path d="M56 36c18 0 36-2 58-8" stroke="#2563EB" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.12" />
+//             </svg>
 //           </div>
-//           <div className="">
 
-//             <span className="text-gray-900 hover:text-blue-900 font-semibold cursor-pointer" onClick={()=>{navigate("/about")}}>About</span>
-//           </div>
-//           <button
-//             onClick={() => navigate("/create-article")}
-//             className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-800 hover:from-purple-800 hover:to-blue-500 text-white h-[33px] w-[100px] px-3 py-1.5 rounded-lg hover:shadow-md transition cursor-pointer "
-//           >
-//             <FaPlus /> Create
-//           </button>
+//           <div className="flex items-center gap-8">
+//             <span className="flex flex-row items-center gap-1 font-semibold text-gray-900 hover:text-blue-900 cursor-pointer">
+//               <FaHome /> Home
+//             </span>
 
-//           <button
-//             onClick={() => setShowLogout(true)}
-//             // className="px-6 py-2 font-semibold text-white rounded-lg bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 hover:scale-105"
-//              className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-purple-800  hover:from-purple-800 hover:to-blue-500 text-white h-[35px] w-[100px] px-3 py-1.5 rounded-lg hover:shadow-md transition font-semibold cursor-pointer "
-//           >
-//             Logout
-//           </button>
+//             <span onClick={() => navigate("/about")} className="text-gray-900 hover:text-blue-900 font-semibold cursor-pointer">
+//               About
+//             </span>
 
-//           {showLogout && (
-//             <Logout onConfirm={handleLogout} onCancel={() => setShowLogout(false)} />
-//           )}
-
-//           <FaBell className="text-xl text-gray-600 hover:text-blue-900 cursor-pointer" onClick={toggleNotifications} />
-          
-//           {showNotification && (
-//             <div className="absolute right-20 top-18 z-50 ">
-//               <Notification onClose={toggleNotifications} />
-//             </div>
-//           )}
-//           <div className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-purple-800 hover:from-purple-800 hover:to-blue-500 text-white cursor-pointer ">
-//             <FaUser  onClick={()=>{navigate("/profile")}}/>
-//           </div>
-//         </div>
-//       </nav>
-
-//       {/* Posts Section */}
-//       <div className="max-w-5xl mx-auto mt-8 space-y-6 px-4 ">
-
-//         {status === "loading" && (
-//           <p className="text-center text-lg text-gray-600 animate-pulse">
-//             Loading articles...
-//           </p>
-//         )}
-
-//         {articleList.length === 0 && status === "succeeded" && (
-//           <p className="text-center text-lg text-gray-600">
-//             No articles found. Create your first post!
-//           </p>
-//         )}
-
-//         {articleList.map((article) => {
-//           const commentCount = Array.isArray(article.comments)
-//             ? article.comments.length
-//             : 0;
-
-//           const likeCount =
-//             typeof article.likeCount === "number"
-//               ? article.likeCount
-//               : Array.isArray(article.likedBy)
-//               ? article.likedBy.length
-//               : 0;
-
-//           return (
-//             <div
-//               key={article._id}
-//               className="flex flex-col md:flex-row justify-between items-start border rounded-2xl p-5 bg-white shadow-md hover:shadow-xl transition-shadow"
+//             <button
+//               onClick={() => navigate("/create-article")}
+//               className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-800 hover:to-blue-500 text-white h-[33px] w-[100px] px-3 py-1.5 rounded-lg transition"
 //             >
-//               {/* LEFT */}
-//               <div className="flex-1">
+//               <FaPlus /> Create
+//             </button>
+
+//             <button
+//               onClick={() => setShowLogout(true)}
+//               className="flex items-center gap-2 bg-gradient-to-r justify-center from-blue-500 to-purple-800 hover:to-blue-500 text-white h-[35px] w-[100px] px-3 py-1.5 rounded-lg font-semibold"
+//             >
+//               Logout
+//             </button>
+
+//             <FaBell
+//               className="text-xl text-gray-600 hover:text-blue-900 cursor-pointer"
+//               onClick={toggleNotifications}
+//             />
+
+//             <div
+//               onClick={() => navigate("/profile")}
+//               className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-purple-800 hover:to-blue-500 text-white cursor-pointer"
+//             >
+//               <FaUser />
+//             </div>
+//           </div>
+//         </nav>
+
+//         {/* POSTS SECTION */}
+//         <div className="max-w-5xl mx-auto mt-8 space-y-6 px-4">
+
+//           {status === "loading" && (
+//             <p className="text-center text-lg text-gray-600 animate-pulse">
+//               Loading articles...
+//             </p>
+//           )}
+
+//           {articleList.map((article) => {
+//             const allComments = article.comments || [];
+//             const showAll = expandedComments[article._id];
+//             const visibleComments = showAll ? allComments : allComments.slice(0, 2);
+
+//             return (
+//               <div
+//                 key={article._id}
+//                 className="flex flex-col border rounded-2xl p-5 bg-white shadow-md hover:shadow-xl transition-shadow"
+//               >
+
+//                 {/* ARTICLE TITLE + CONTENT */}
 //                 <h2 className="text-xl font-semibold text-gray-800">{article.title}</h2>
 //                 <p className="mt-2 text-gray-600">{article.content}</p>
 
+//                 {/* STATS SECTION */}
 //                 <div className="flex items-center justify-between text-gray-600 text-sm mt-4">
-//                   <div className="flex items-center gap-2">
+
+//                   {/* CLICK TO OPEN COMMENT INPUT */}
+//                   <div
+//                     className="flex items-center gap-2 cursor-pointer"
+//                     onClick={() => toggleCommentBox(article._id)}
+//                   >
 //                     <FaCommentAlt className="text-purple-500" />
-//                     <span>{commentCount} Comments</span>
+//                     <span>{allComments.length} Comments</span>
 //                   </div>
 
 //                   <div className="flex items-center gap-1">
-//                     <span>{likeCount}</span>
-//                     <FaHeart className="text-pink-500" />
+//                     <span>{article.likeCount || 0}</span>
+//                     <FaHeart className="text-pink-500 "  />
 //                   </div>
 //                 </div>
-//               </div>
 
-//               {/* RIGHT */}
-//               <div className="md:w-1/4 w-full md:pl-6 md:border-l border-gray-200 mt-4 md:mt-0">
-//                 <div className="flex items-center gap-2 mb-2">
-//                   <FaUser className="text-purple-600 text-lg" />
-//                   <span className="font-semibold text-gray-800">
-//                     {article.user?.email || "Unknown User"}
-//                   </span>
+//                 {/* COMMENT INPUT — SHOW ONLY WHEN CLICKED */}
+//                 {showCommentBox[article._id] && (
+//                   <div className="flex gap-3 mt-4">
+//                     <input
+//                       type="text"
+//                       placeholder="Add a comment..."
+//                       className="flex-1 p-2 border rounded-lg bg-gray-100"
+//                       value={commentInputs[article._id] || ""}
+//                       onChange={(e) => handleCommentChange(article._id, e.target.value)}
+//                     />
+//                     <button
+//                       onClick={() => addComment(article._id)}
+//                       className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
+//                     >
+//                       Send
+//                     </button>
+//                   </div>
+//                 )}
+
+//                 {/* COMMENTS SECTION */}
+//                 <div className="mt-4 space-y-3">
+//                   {visibleComments.map((c) => (
+//                     <div key={c.id} className="p-3 bg-gray-100 rounded-lg border border-gray-300">
+//                       <p className="text-gray-800">{c.text}</p>
+//                       <p className="text-xs text-gray-500">{c.time}</p>
+//                     </div>
+//                   ))}
+
+//                   {allComments.length > 2 && (
+//                     <button
+//                       onClick={() => toggleShowMore(article._id)}
+//                       className="text-blue-600 font-medium mt-1"
+//                     >
+//                       {showAll ? "Show Less" : `Show More (${allComments.length - 2})`}
+//                     </button>
+//                   )}
 //                 </div>
 
-//                 <div className="bg-gray-100 text-gray-600 text-sm px-3 py-1 rounded-lg shadow-sm">
-//                   {formatDate(article.createdAt)}
+//                 {/* USER DETAILS */}
+//                 <div className="mt-4 text-sm text-gray-500">
+//                   Posted by: {article.user?.email || "Unknown User"} • {formatDate(article.createdAt)}
 //                 </div>
+
 //               </div>
-//             </div>
-//           );
-//         })}
+//             );
+//           })}
+//         </div>
 //       </div>
- 
-    
 
+//       {/* NOTIFICATION POPUP */}
+//       {showNotification && (
+//         <div className="absolute right-20 top-18">
+//           <Notification onClose={toggleNotifications} />
+//         </div>
+//       )}
+
+//       {/* LOGOUT POPUP */}
+//       {showLogout && (
+//         <Logout onConfirm={handleLogout} onCancel={() => setShowLogout(false)} />
+//       )}
 
 //     </div>
 //   );
@@ -223,12 +256,21 @@
 // export default Home;
 
 
-import { FaUser, FaHeart, FaCommentAlt, FaPlus, FaBell, FaHome } from "react-icons/fa";
+
+
+import {
+  FaUser,
+  FaHeart,
+  FaCommentAlt,
+  FaPlus,
+  FaBell,
+  FaHome,
+} from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllArticles } from "../redux/slices/articleSlice";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Logout from "./Logout";
 import Notification from "./Notification";
 
@@ -240,6 +282,12 @@ function Home() {
 
   const [showLogout, setShowLogout] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+
+  const [expandedComments, setExpandedComments] = useState({});
+  const [commentInputs, setCommentInputs] = useState({});
+  const [showCommentInput, setShowCommentInput] = useState({});
+
+  const [likes, setLikes] = useState({}); // ❤️ Like states
 
   const toggleNotifications = () => setShowNotification(!showNotification);
 
@@ -265,15 +313,69 @@ function Home() {
     });
   };
 
+  const toggleShowMore = (articleId) => {
+    setExpandedComments((prev) => ({
+      ...prev,
+      [articleId]: !prev[articleId],
+    }));
+  };
+
+  const openCommentBox = (articleId) => {
+    setShowCommentInput((prev) => ({
+      ...prev,
+      [articleId]: !prev[articleId],
+    }));
+  };
+
+  const handleCommentChange = (articleId, value) => {
+    setCommentInputs((prev) => ({
+      ...prev,
+      [articleId]: value,
+    }));
+  };
+
+  const addComment = (articleId) => {
+    if (!commentInputs[articleId]?.trim()) return;
+
+    const newComment = {
+      id: Date.now(),
+      text: commentInputs[articleId],
+      time: new Date().toLocaleString("en-IN", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      }),
+    };
+
+    const articleIndex = articles.findIndex((a) => a._id === articleId);
+    articles[articleIndex].comments.push(newComment);
+
+    setCommentInputs((prev) => ({ ...prev, [articleId]: "" }));
+    toast.success("Comment added!");
+  };
+
+  // ❤️ LIKE FUNCTIONALITY
+  const toggleLike = (articleId) => {
+    setLikes((prev) => {
+      const isLiked = prev[articleId]?.liked || false;
+      const currentCount = prev[articleId]?.count || 0;
+
+      return {
+        ...prev,
+        [articleId]: {
+          liked: !isLiked,
+          count: isLiked ? currentCount - 1 : currentCount + 1,
+        },
+      };
+    });
+  };
+
   const articleList = Array.isArray(articles) ? articles : [];
 
   return (
     <div className="relative min-h-screen text-gray-800 font-sans bg-[url('./image1.png')] bg-cover bg-center">
-
-      {/* BLUR BACKGROUND ONLY WHEN LOGOUT POPUP IS OPEN */}
       <div className={`${showLogout ? "blur-sm pointer-events-none" : ""}`}>
-
-        {/* NAVBAR */}
+        
+        {/* ▓▒░ NAVBAR ░▒▓ */}
         <nav className="flex items-center justify-between border-b bg-white/20 backdrop-blur-md px-6 py-3 shadow-sm sticky top-0 z-40">
           <div>
             <svg width="220" height="48" viewBox="0 0 220 48" fill="none">
@@ -286,110 +388,157 @@ function Home() {
           </div>
 
           <div className="flex items-center gap-8">
-            <span className="flex flex-row items-center gap-1 font-semibold text-gray-900 hover:text-blue-900 cursor-pointer">
+            <span className="flex items-center gap-1 font-semibold cursor-pointer">
               <FaHome /> Home
             </span>
 
-            <span onClick={() => navigate("/about")} className="text-gray-900 hover:text-blue-900 font-semibold cursor-pointer">
+            <span onClick={() => navigate("/about")} className="font-semibold cursor-pointer">
               About
             </span>
 
             <button
               onClick={() => navigate("/create-article")}
-              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-800 hover:from-purple-800 hover:to-blue-500 text-white h-[33px] w-[100px] px-3 py-1.5 rounded-lg transition"
+              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-800 text-white h-[33px] w-[100px] px-3 py-1.5 rounded-lg"
             >
               <FaPlus /> Create
             </button>
 
-            {/* LOGOUT BUTTON */}
             <button
               onClick={() => setShowLogout(true)}
-              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-800 hover:from-purple-800 hover:to-blue-500 text-white h-[35px] w-[100px] px-3 py-1.5 rounded-lg transition font-semibold justify-center"
+              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 justify-center   to-purple-800 text-white h-[35px] w-[100px] px-3 py-1.5 rounded-lg"
             >
               Logout
             </button>
 
-            {/* NOTIFICATION ICON */}
             <FaBell
-              className="text-xl text-gray-600 hover:text-blue-900  cursor-pointer"
+              className="text-xl cursor-pointer"
               onClick={toggleNotifications}
             />
 
-            {/* PROFILE ICON */}
             <div
               onClick={() => navigate("/profile")}
-              className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-purple-800 hover:from-purple-800 hover:to-blue-500 text-white cursor-pointer"
+              className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-purple-800 text-white cursor-pointer"
             >
               <FaUser />
             </div>
           </div>
         </nav>
 
-        {/* POSTS SECTION */}
+        {/* ▓▒░ ARTICLES SECTION ░▒▓ */}
         <div className="max-w-5xl mx-auto mt-8 space-y-6 px-4">
-          {status === "loading" && <p className="text-center text-lg text-gray-600 animate-pulse">Loading articles...</p>}
-
-          {articleList.length === 0 && status === "succeeded" && (
-            <p className="text-center text-lg text-gray-600">No articles found.</p>
+          {status === "loading" && (
+            <p className="text-center text-lg animate-pulse">Loading articles...</p>
           )}
 
-          {articleList.map((article) => (
-            <div
-              key={article._id}
-              className="flex flex-col md:flex-row justify-between items-start border rounded-2xl p-5 bg-white shadow-md hover:shadow-xl transition-shadow"
-            >
-              <div className="flex-1">
-                <h2 className="text-xl font-semibold text-gray-800">{article.title}</h2>
+          {articleList.map((article) => {
+            const allComments = article.comments || [];
+            const showAll = expandedComments[article._id];
+            const visibleComments = showAll ? allComments : allComments.slice(0, 2);
+
+            const likeState = likes[article._id] || { liked: false, count: 0 };
+            const totalLikes = (article.likeCount || 0) + likeState.count;
+
+            return (
+              <div
+                key={article._id}
+                className="flex flex-col border rounded-2xl p-5 bg-white shadow-md hover:shadow-xl transition-shadow"
+              >
+                <h2 className="text-xl font-semibold">{article.title}</h2>
                 <p className="mt-2 text-gray-600">{article.content}</p>
 
-                <div className="flex items-center justify-between text-gray-600 text-sm mt-4">
-                  <div className="flex items-center gap-2">
-                    <FaCommentAlt className="text-purple-500" />
-                    <span>{article.comments?.length || 0} Comments</span>
+                {/* LIKE + COMMENTS */}
+                <div className="flex items-center justify-between mt-4 text-gray-600 text-sm">
+                  
+                  {/* COMMENTS CLICK → INPUT OPEN */}
+                  <div
+                    className="flex items-center gap-2 cursor-pointer"
+                    onClick={() => openCommentBox(article._id)}
+                  >
+                    <FaCommentAlt className="text-purple-500 text-xl" />
+                    <span >{allComments.length} Comments</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <span>{article.likeCount || article.likedBy?.length || 0}</span>
-                    <FaHeart className="text-pink-500" />
-                  </div>
-                </div>
-              </div>
 
-              <div className="md:w-1/4 w-full md:pl-6 md:border-l border-gray-200 mt-4 md:mt-0">
-                <div className="flex items-center gap-2 mb-2">
-                  <FaUser className="text-purple-600 text-lg" />
-                  <span className="font-semibold text-gray-800">{article.user?.email || "Unknown User"}</span>
+                  {/* ❤️ LIKE BUTTON */}
+                  <div
+                    className="flex items-center gap-3 cursor-pointer text-xl"
+                    onClick={() => toggleLike(article._id)}
+                  >
+                    <FaHeart
+                      className={`text-xl transition  ${
+                        likeState.liked ? "text-red-500" : "text-gray-400"
+                      }`}
+                    />
+                    <span >{totalLikes}</span>
+                  </div>
                 </div>
-                <div className="bg-gray-100 text-gray-600 text-sm px-3 py-1 rounded-lg shadow-sm">
+
+                {/* COMMENT INPUT */}
+                {showCommentInput[article._id] && (
+                  <div className="flex gap-3 mt-4">
+                    <input
+                      type="text"
+                      placeholder="Add a comment..."
+                      className="flex-1 p-2 border rounded-lg bg-gray-100"
+                      value={commentInputs[article._id] || ""}
+                      onChange={(e) =>
+                        handleCommentChange(article._id, e.target.value)
+                      }
+                    />
+                    <button
+                      onClick={() => addComment(article._id)}
+                      className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                    >
+                      Send
+                    </button>
+                  </div>
+                )}
+
+                {/* COMMENTS LIST */}
+                <div className="mt-4 space-y-3">
+                  {visibleComments.map((c) => (
+                    <div
+                      key={c.id}
+                      className="p-3 bg-gray-100 rounded-lg border"
+                    >
+                      <p>{c.text}</p>
+                      <p className="text-xs text-gray-500">{c.time}</p>
+                    </div>
+                  ))}
+
+                  {allComments.length > 2 && (
+                    <button
+                      onClick={() => toggleShowMore(article._id)}
+                      className="text-blue-600 mt-1"
+                    >
+                      {showAll
+                        ? "Show Less"
+                        : `Show More (${allComments.length - 2})`}
+                    </button>
+                  )}
+                </div>
+
+                <div className="mt-4 text-sm text-gray-500">
+                  Posted by: {article.user?.email || "Unknown User"} •{" "}
                   {formatDate(article.createdAt)}
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
-      {/* NOTIFICATION POPUP (NO BLUR NOW) */}
       {showNotification && (
-        <div className="absolute   right-20 top-18">
-          <div className="relative">
-            <Notification />
-            
-              onClick={toggleNotifications}
-              
-           
-          </div>
+        <div className="absolute right-20 top-18">
+          <Notification onClose={toggleNotifications} />
         </div>
       )}
 
-      {/* LOGOUT POPUP (BLUR APPLIED ABOVE) */}
       {showLogout && (
-        <Logout
-          onConfirm={handleLogout}
-          onCancel={() => setShowLogout(false)}
-        />
+        <Logout onConfirm={handleLogout} onCancel={() => setShowLogout(false)} />
       )}
     </div>
   );
 }
 
 export default Home;
+
