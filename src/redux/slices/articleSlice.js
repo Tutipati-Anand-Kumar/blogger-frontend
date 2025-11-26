@@ -95,7 +95,9 @@ const articleSlice = createSlice({
       .addCase(likeArticle.fulfilled, (state, action) => {
         const article = state.articles.find(a => a._id === action.payload.articleId);
         if (article) {
-          article.likes = action.payload.data.likes; 
+        article.likeCount = action.payload.data.likeCount;
+        article.likedByCurrentUser = action.payload.data.likedByCurrentUser;
+        article.likedBy = action.payload.data.likedBy;
         }
       })
 
