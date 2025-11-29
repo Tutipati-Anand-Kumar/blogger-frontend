@@ -7,61 +7,82 @@ const initialState = {
   error: null,
 };
 
+/* ------------------------------------------------------
+   CREATE ARTICLE
+------------------------------------------------------ */
 export const createArticle = createAsyncThunk(
   "articles/create",
   async (payload, { rejectWithValue }) => {
     try {
       const { data } = await api.post("articles", payload);
-      console.log("created data: ",data);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || "Failed to create article");
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to create article"
+      );
     }
   }
 );
 
+/* ------------------------------------------------------
+   GET ALL ARTICLES
+------------------------------------------------------ */
 export const getAllArticles = createAsyncThunk(
   "articles/getAll",
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await api.get("articles");
-      console.log("coming data: ", data);
-      return data; 
+      return data;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || "Failed to load articles");
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to load articles"
+      );
     }
   }
 );
 
+/* ------------------------------------------------------
+   LIKE ARTICLE  ⭐ FIXED ⭐
+------------------------------------------------------ */
 export const likeArticle = createAsyncThunk(
   "articles/like",
   async (articleId, { rejectWithValue }) => {
     try {
       const { data } = await api.put(`articles/${articleId}/like`);
-      console.log("articles :", data);
-      return { articleId, data };
+
+      // backend returns { message: "...", article: {...} }
+      return {
+        articleId,
+        data: data.article,
+      };
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || "Failed to like article");
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to like article"
+      );
     }
   }
 );
 
+/* ------------------------------------------------------
+   COMMENT ON ARTICLE
+------------------------------------------------------ */
 export const commentArticle = createAsyncThunk(
   "articles/comment",
   async ({ articleId, text }, { rejectWithValue }) => {
     try {
       const { data } = await api.post(`articles/${articleId}/comment`, { text });
-      console.log('comments', data)
       return { articleId, comment: data.comment };
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || "Failed to post comment");
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to post comment"
+      );
     }
   }
 );
 
-
-
-
+/* ------------------------------------------------------
+   SLICE
+------------------------------------------------------ */
 const articleSlice = createSlice({
   name: "articles",
   initialState,
@@ -69,20 +90,20 @@ const articleSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-
+      /* CREATE */
       .addCase(createArticle.pending, (state) => {
         state.status = "loading";
       })
       .addCase(createArticle.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.articles.push(action.payload.article);
-        console.log(state)
       })
       .addCase(createArticle.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       })
 
+      /* GET ALL */
       .addCase(getAllArticles.pending, (state) => {
         state.status = "loading";
       })
@@ -95,50 +116,48 @@ const articleSlice = createSlice({
         state.error = action.payload;
       })
 
-      // .addCase(likeArticle.fulfilled, (state, action) => {
-      //   const article = state.articles.find(a => a._id === action.payload.articleId);
-      //   if (article) {
-      //   article.likeCount = action.payload.data.likeCount;
-      //   article.likedByCurrentUser = action.payload.data.likedByCurrentUser;
-      //   article.likedBy = action.payload.data.likedBy;
-      //   }
-      // })
-
-      // .addCase(commentArticle.fulfilled, (state, action) => {
-      //   const article = state.articles.find(a => a._id === action.payload.articleId);
-      //   if (article) {
-      //     article.comments.push(action.payload.comment); 
-      //   }
-      // });
-
-
-
+      /* ------------------------------------------------------
+         LIKE ARTICLE  ⭐ FINAL FIXED VERSION ⭐
+      ------------------------------------------------------ */
+      .addCase(likeArticle.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
       .addCase(likeArticle.fulfilled, (state, action) => {
-    const { _id, likeCount, likedByCurrentUser, likedBy } = action.payload.data;
+        state.status = "succeeded";
 
-    const article = state.articles.find(a => a._id === _id);
-    if (article) {
-        article.likeCount = likeCount;
-        article.likedByCurrentUser = likedByCurrentUser;
-        article.likedBy = likedBy;
-    }
-})
+        const { articleId, data } = action.payload;
 
+        const article = state.articles.find((a) => a._id === articleId);
+        if (article) {
 
-.addCase(commentArticle.fulfilled, (state, action) => {
-    const { _id, comment } = action.payload.data;
+          // Get logged-in user ID from localStorage
+          const userId = localStorage.getItem("userId");
 
-    const article = state.articles.find(a => a._id === _id);
-    if (article) {
-        if (!article.comments) {
-            article.comments = [];   // prevent undefined error
+          // Backend gives us: likedBy: [userIds]
+          const likedByCurrentUser = data.likedBy.includes(userId);
+
+          // Update article in Redux
+          article.likeCount = data.likeCount;
+          article.likedBy = data.likedBy;
+          article.likedByCurrentUser = likedByCurrentUser;
         }
-        article.comments.push(comment);
-    }
-});
+      })
+      .addCase(likeArticle.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+
+      /* COMMENT */
+      .addCase(commentArticle.fulfilled, (state, action) => {
+        const article = state.articles.find(
+          (a) => a._id === action.payload.articleId
+        );
+        if (article) {
+          article.comments.push(action.payload.comment);
+        }
+      });
   },
 });
 
 export default articleSlice.reducer;
-
-
