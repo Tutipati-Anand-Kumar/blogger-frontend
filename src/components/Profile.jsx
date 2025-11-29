@@ -33,7 +33,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center p-6">
-      <div className="bg-white shadow-xl rounded-2xl w-full max-w-4xl p-10">
+      <div className="bg-white shadow-xl rounded-2xl w-full max-w-4xl p-10 ">
 
         {/* TOP SECTION */}
         <div className="flex items-center gap-6">
@@ -105,8 +105,12 @@ const Profile = () => {
         </div>
 
         {/* Content Section */}
-        <div className="mt-10 p-6 border rounded-xl bg-red-50 h-40">
-          <p className="text-gray-600">Write something about the user…</p>
+        <textarea className="mt-10 p-6 border rounded-xl bg-red-50 h-40 w-[100%]">
+          <p className="text-gray-600 "></p>
+        </textarea>
+        <div className="gap-[560px] flex">
+          <button className="border rounded-xl p-2 m-1 bg-purple-600 text-white ">Apply the changes</button> 
+        <button className="border rounded-xl p-2 m-1 bg-purple-600 text-white w-[80px]">Cancel</button>
         </div>
       </div>
 
@@ -138,7 +142,7 @@ const Profile = () => {
 
             {/* Image Upload */}
             <label className="block mb-3">
-              <span className="text-gray-700">Profile Image:</span>
+              <span className="text-gray-700 border rounded p-0.5 bg-white hover:bg-purple-100"> Change Profile:</span>
               <input
                 type="file"
                 accept="image/*"
@@ -156,7 +160,7 @@ const Profile = () => {
                 />
               </div>
             )}
-
+ 
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setOpenEdit(false)}
@@ -179,4 +183,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Profile;

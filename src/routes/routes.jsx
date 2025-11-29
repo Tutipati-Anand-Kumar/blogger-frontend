@@ -7,6 +7,7 @@ import CreateArticle from "../components/CreateArticle";
 import Profile from "../components/Profile";
 import About from "../components/About";
 import Notification from "../components/Notification";
+import UserCard from "../components/UserCard";
 
 
 const routes = createBrowserRouter([
@@ -41,8 +42,7 @@ const routes = createBrowserRouter([
   {
     path:"/notifications",
     element:<Notification/>
-  }
-
+  },
 ]);
 
 export default routes;

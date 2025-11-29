@@ -1,11 +1,19 @@
-// import { FaUser, FaHeart, FaCommentAlt, FaPlus, FaBell, FaHome } from "react-icons/fa";
+// import {
+//   FaUser,
+//   FaHeart,
+//   FaCommentAlt,
+//   FaPlus,
+//   FaBell,
+//   FaHome,
+// } from "react-icons/fa";
 // import { useState, useEffect } from "react";
 // import { useDispatch, useSelector } from "react-redux";
 // import { getAllArticles } from "../redux/slices/articleSlice";
 // import { toast } from "react-toastify";
-// import { useNavigate } from "react-router-dom";
+// import { data, useNavigate } from "react-router-dom";
 // import Logout from "./Logout";
 // import Notification from "./Notification";
+// import { likeArticle, commentArticle } from "../redux/slices/articleSlice";
 
 // function Home() {
 //   const navigate = useNavigate();
@@ -16,9 +24,12 @@
 //   const [showLogout, setShowLogout] = useState(false);
 //   const [showNotification, setShowNotification] = useState(false);
 
-//   const [expandedComments, setExpandedComments] = useState({});
+//   // const [expandedComments, setExpandedComments] = useState({});
 //   const [commentInputs, setCommentInputs] = useState({});
-//   const [showCommentBox, setShowCommentBox] = useState({}); // NEW
+//   const [showCommentInput, setShowCommentInput] = useState({});
+//   const [showCount, setShowCount] = useState({});
+
+//   // const [likes, setLikes] = useState({}); // ❤️ Like states
 
 //   const toggleNotifications = () => setShowNotification(!showNotification);
 
@@ -51,8 +62,8 @@
 //     }));
 //   };
 
-//   const toggleCommentBox = (articleId) => {
-//     setShowCommentBox((prev) => ({
+//   const openCommentBox = (articleId) => {
+//     setShowCommentInput((prev) => ({
 //       ...prev,
 //       [articleId]: !prev[articleId],
 //     }));
@@ -65,40 +76,49 @@
 //     }));
 //   };
 
-//   const addComment = (articleId) => {
-//     if (!commentInputs[articleId]?.trim()) return;
+//   // const addComment = (articleId) => {
+//   //   if (!commentInputs[articleId]?.trim()) return;
 
-//     const newComment = {
-//       id: Date.now(),
-//       text: commentInputs[articleId],
-//       time: new Date().toLocaleString("en-IN", {
-//         dateStyle: "medium",
-//         timeStyle: "short",
-//       }),
-//     };
+//   //   const newComment = {
+//   //     id: Date.now(),
+//   //     text: commentInputs[articleId],
+//   //     time: new Date().toLocaleString("en-IN", {
+//   //       dateStyle: "medium",
+//   //       timeStyle: "short",
+//   //     }),
+//   //   };
 
-//     const articleIndex = articles.findIndex((a) => a._id === articleId);
-//     articles[articleIndex].comments.push(newComment);
+//   //   const articleIndex = articles.findIndex((a) => a._id === articleId);
+//   //   articles[articleIndex].comments.push(newComment);
 
-//     setCommentInputs((prev) => ({ ...prev, [articleId]: "" }));
+//   //   setCommentInputs((prev) => ({ ...prev, [articleId]: "" }));
+//   //   toast.success("Comment added!");
+//   // };
 
-//     // Close comment box after sending
-//     setShowCommentBox((prev) => ({ ...prev, [articleId]: false }));
+//   // ❤️ LIKE FUNCTIONALITY
+//   // const toggleLike = (articleId) => {
+//   //   setLikes((prev) => {
+//   //     const isLiked = prev[articleId]?.liked || false;
+//   //     const currentCount = prev[articleId]?.count || 0;
 
-//     toast.success("Comment added!");
-//   };
+//   //     return {
+//   //       ...prev,
+//   //       [articleId]: {
+//   //         liked: !isLiked,
+//   //         count: isLiked ? currentCount - 1 : currentCount + 1,
+//   //       },
+//   //     };
+//   //   });
+//   // };
 
 //   const articleList = Array.isArray(articles) ? articles : [];
 
 //   return (
 //     <div className="relative min-h-screen text-gray-800 font-sans bg-[url('./image1.png')] bg-cover bg-center">
-
-//       {/* APPLY BLUR WHEN LOGOUT POPUP IS OPEN */}
 //       <div className={`${showLogout ? "blur-sm pointer-events-none" : ""}`}>
-
-//         {/* NAVBAR */}
+        
+//         {/* ▓▒░ NAVBAR ░▒▓ */}
 //         <nav className="flex items-center justify-between border-b bg-white/20 backdrop-blur-md px-6 py-3 shadow-sm sticky top-0 z-40">
-
 //           <div>
 //             <svg width="220" height="48" viewBox="0 0 220 48" fill="none">
 //               <g transform="translate(56,32)">
@@ -110,108 +130,158 @@
 //           </div>
 
 //           <div className="flex items-center gap-8">
-//             <span className="flex flex-row items-center gap-1 font-semibold text-gray-900 hover:text-blue-900 cursor-pointer">
+//             <span className="flex items-center gap-1 font-semibold cursor-pointer">
 //               <FaHome /> Home
 //             </span>
 
-//             <span onClick={() => navigate("/about")} className="text-gray-900 hover:text-blue-900 font-semibold cursor-pointer">
+//             <span onClick={() => navigate("/about")} className="font-semibold cursor-pointer">
 //               About
 //             </span>
 
 //             <button
 //               onClick={() => navigate("/create-article")}
-//               className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-800 hover:to-blue-500 text-white h-[33px] w-[100px] px-3 py-1.5 rounded-lg transition"
+//               className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-800 text-white h-[33px] w-[100px] px-3 py-1.5 rounded-lg"
 //             >
 //               <FaPlus /> Create
 //             </button>
 
 //             <button
 //               onClick={() => setShowLogout(true)}
-//               className="flex items-center gap-2 bg-gradient-to-r justify-center from-blue-500 to-purple-800 hover:to-blue-500 text-white h-[35px] w-[100px] px-3 py-1.5 rounded-lg font-semibold"
+//               className="flex items-center gap-2 bg-gradient-to-r from-blue-500 justify-center   to-purple-800 text-white h-[35px] w-[100px] px-3 py-1.5 rounded-lg"
 //             >
 //               Logout
 //             </button>
 
 //             <FaBell
-//               className="text-xl text-gray-600 hover:text-blue-900 cursor-pointer"
+//               className="text-xl cursor-pointer"
 //               onClick={toggleNotifications}
 //             />
 
 //             <div
 //               onClick={() => navigate("/profile")}
-//               className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-purple-800 hover:to-blue-500 text-white cursor-pointer"
+//               className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-purple-800 text-white cursor-pointer"
 //             >
 //               <FaUser />
 //             </div>
 //           </div>
 //         </nav>
 
-//         {/* POSTS SECTION */}
+//         {/* ▓▒░ ARTICLES SECTION ░▒▓ */}
 //         <div className="max-w-5xl mx-auto mt-8 space-y-6 px-4">
-
 //           {status === "loading" && (
-//             <p className="text-center text-lg text-gray-600 animate-pulse">
-//               Loading articles...
-//             </p>
+//             <p className="text-center text-lg animate-pulse">Loading articles...</p>
 //           )}
 
 //           {articleList.map((article) => {
-//             const allComments = article.comments || [];
-//             const showAll = expandedComments[article._id];
-//             const visibleComments = showAll ? allComments : allComments.slice(0, 2);
+//             // const allComments = article.comments || [];
+//             // const showAll = expandedComments[article._id];
+//             // const visibleComments = showAll ? allComments : allComments.slice(0, 2);
+
+//             const totalComments = article.comments.length;
+//             const visibleCount = showCount[article._id] || 5;
+
+//             const commentsToShow = article.comments.slice(0, visibleCount);
+
+
+//             // const likeState = likes[article._id] || { liked: false, count: 0 };3
+//             // const totalLikes = (article.likeCount || 0) + likeState.count;
 
 //             return (
 //               <div
 //                 key={article._id}
 //                 className="flex flex-col border rounded-2xl p-5 bg-white shadow-md hover:shadow-xl transition-shadow"
 //               >
+//                 <div className="mb-3 text-sm text-gray-500">
+//                   Posted by: {article.user?.email || "Unknown User"} •{" "}
+//                   {formatDate(article.createdAt)}
+//                 </div>
 
-//                 {/* ARTICLE TITLE + CONTENT */}
-//                 <h2 className="text-xl font-semibold text-gray-800">{article.title}</h2>
+//                 <h2 className="text-xl font-semibold">{article.title}</h2>
 //                 <p className="mt-2 text-gray-600">{article.content}</p>
 
-//                 {/* STATS SECTION */}
-//                 <div className="flex items-center justify-between text-gray-600 text-sm mt-4">
-
-//                   {/* CLICK TO OPEN COMMENT INPUT */}
-//                   <div
+//                 {/* LIKE + COMMENTS */}
+//                 <div className="flex items-center justify-between mt-4 text-gray-600 text-sm">
+                  
+//                   {/* COMMENTS CLICK → INPUT OPEN */}
+//                   {/* <div
 //                     className="flex items-center gap-2 cursor-pointer"
-//                     onClick={() => toggleCommentBox(article._id)}
+//                     onClick={() => openCommentBox(article._id)}
 //                   >
-//                     <FaCommentAlt className="text-purple-500" />
-//                     <span>{allComments.length} Comments</span>
-//                   </div>
+//                     <FaCommentAlt className="text-purple-500 text-xl" />
+//                     <span >{allComments.length} Comments</span>
+//                   </div> */}
 
-//                   <div className="flex items-center gap-1">
-//                     <span>{article.likeCount || 0}</span>
-//                     <FaHeart className="text-pink-500 "  />
+//                   {/* {showCommentInput[article._id] && (
+//                     <div className="flex gap-3 mt-4">
+//                       <input
+//                         type="text"
+//                         placeholder="Add a comment..."
+//                         className="flex-1 p-2 border rounded-lg bg-gray-100"
+//                         value={commentInputs[article._id] || ""}
+//                         onChange={(e) =>
+//                           handleCommentChange(article._id, e.target.value)
+//                         }
+//                       />
+//                       <button
+//                         onClick={() => dispatch(commentArticle({
+//                           articleId: article._id,
+//                           text: commentInputs[article._id]
+//                         }))}
+//                         className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+//                       >
+//                         Post
+//                       </button>
+//                     </div>
+//                   )} */}
+
+//                   commentsToShow = article.comments.slice(0, showCount[article._id] || 5);
+
+
+//                   {/* ❤️ LIKE BUTTON */}
+//                   <div
+//                     className="flex items-center gap-3 cursor-pointer text-xl"
+//                     onClick={() => {
+//                       dispatch(likeArticle(article._id))                 
+//                     }}
+//                   >
+//                     <FaHeart
+//                       className={`text-xl transition  ${
+//                         article.likedByCurrentUser? "text-red-500" : "text-gray-400"
+//                       }`}
+//                     />
+//                     <span >{article.likeCount}</span>
 //                   </div>
 //                 </div>
 
-//                 {/* COMMENT INPUT — SHOW ONLY WHEN CLICKED */}
-//                 {showCommentBox[article._id] && (
+//                 {/* COMMENT INPUT */}
+//                 {showCommentInput[article._id] && (
 //                   <div className="flex gap-3 mt-4">
 //                     <input
 //                       type="text"
 //                       placeholder="Add a comment..."
 //                       className="flex-1 p-2 border rounded-lg bg-gray-100"
 //                       value={commentInputs[article._id] || ""}
-//                       onChange={(e) => handleCommentChange(article._id, e.target.value)}
+//                       onChange={(e) =>
+//                         handleCommentChange(article._id, e.target.value)
+//                       }
 //                     />
 //                     <button
 //                       onClick={() => addComment(article._id)}
-//                       className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
+//                       className="px-4 py-2 bg-blue-500 text-white rounded-lg"
 //                     >
 //                       Send
 //                     </button>
 //                   </div>
 //                 )}
 
-//                 {/* COMMENTS SECTION */}
-//                 <div className="mt-4 space-y-3">
+//                 {/* COMMENTS LIST */}
+//                 {/* <div className="mt-4 space-y-3">
 //                   {visibleComments.map((c) => (
-//                     <div key={c.id} className="p-3 bg-gray-100 rounded-lg border border-gray-300">
-//                       <p className="text-gray-800">{c.text}</p>
+//                     <div
+//                       key={c.id}
+//                       className="p-3 bg-gray-100 rounded-lg border"
+//                     >
+//                       <p>{c.text}</p>
 //                       <p className="text-xs text-gray-500">{c.time}</p>
 //                     </div>
 //                   ))}
@@ -219,17 +289,39 @@
 //                   {allComments.length > 2 && (
 //                     <button
 //                       onClick={() => toggleShowMore(article._id)}
-//                       className="text-blue-600 font-medium mt-1"
+//                       className="text-blue-600 mt-1"
 //                     >
-//                       {showAll ? "Show Less" : `Show More (${allComments.length - 2})`}
+//                       {showAll
+//                         ? "Show Less"
+//                         : `Show More (${allComments.length - 2})`}
 //                     </button>
 //                   )}
-//                 </div>
+//                 </div> */}
+//                 {/* COMMENTS LIST */}
+//                   <div className="mt-4 space-y-3">
 
-//                 {/* USER DETAILS */}
-//                 <div className="mt-4 text-sm text-gray-500">
-//                   Posted by: {article.user?.email || "Unknown User"} • {formatDate(article.createdAt)}
-//                 </div>
+//                     {commentsToShow.map((c) => (
+//                       <div key={c._id} className="p-3 bg-gray-100 rounded-lg border">
+//                         <p>{c.text}</p>
+//                         <p className="text-xs text-gray-500">{formatDate(c.createdAt)}</p>
+//                       </div>
+//                     ))}
+
+//                     {/* READ MORE */}
+//                     {visibleCount < totalComments && (
+//                       <button
+//                         onClick={() =>
+//                           setShowCount((prev) => ({
+//                             ...prev,
+//                             [article._id]: (prev[article._id] || 5) + 5,
+//                           }))
+//                         }
+//                         className="text-blue-600 mt-1"
+//                       >
+//                         Read More
+//                       </button>
+//                     )}
+//                   </div>
 
 //               </div>
 //             );
@@ -237,23 +329,23 @@
 //         </div>
 //       </div>
 
-//       {/* NOTIFICATION POPUP */}
 //       {showNotification && (
 //         <div className="absolute right-20 top-18">
 //           <Notification onClose={toggleNotifications} />
 //         </div>
 //       )}
 
-//       {/* LOGOUT POPUP */}
 //       {showLogout && (
 //         <Logout onConfirm={handleLogout} onCancel={() => setShowLogout(false)} />
 //       )}
-
 //     </div>
 //   );
 // }
 
 // export default Home;
+
+
+
 
 
 
@@ -268,26 +360,23 @@ import {
 } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllArticles } from "../redux/slices/articleSlice";
+import { getAllArticles, likeArticle, commentArticle } from "../redux/slices/articleSlice";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logout from "./Logout";
 import Notification from "./Notification";
+import UserCard from "./UserCard";
 
 function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const { articles, status, error } = useSelector((state) => state.articles);
 
   const [showLogout, setShowLogout] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
-
-  const [expandedComments, setExpandedComments] = useState({});
   const [commentInputs, setCommentInputs] = useState({});
   const [showCommentInput, setShowCommentInput] = useState({});
-
-  const [likes, setLikes] = useState({}); // ❤️ Like states
+  const [showCount, setShowCount] = useState({});
 
   const toggleNotifications = () => setShowNotification(!showNotification);
 
@@ -313,13 +402,6 @@ function Home() {
     });
   };
 
-  const toggleShowMore = (articleId) => {
-    setExpandedComments((prev) => ({
-      ...prev,
-      [articleId]: !prev[articleId],
-    }));
-  };
-
   const openCommentBox = (articleId) => {
     setShowCommentInput((prev) => ({
       ...prev,
@@ -334,47 +416,33 @@ function Home() {
     }));
   };
 
-  const addComment = (articleId) => {
-    if (!commentInputs[articleId]?.trim()) return;
+  const handlePostComment = (articleId) => {
+    const text = commentInputs[articleId];
+    if (!text?.trim()) return;
 
-    const newComment = {
-      id: Date.now(),
-      text: commentInputs[articleId],
-      time: new Date().toLocaleString("en-IN", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      }),
-    };
-
-    const articleIndex = articles.findIndex((a) => a._id === articleId);
-    articles[articleIndex].comments.push(newComment);
-
+    dispatch(commentArticle({ articleId, text }));
     setCommentInputs((prev) => ({ ...prev, [articleId]: "" }));
-    toast.success("Comment added!");
-  };
-
-  // ❤️ LIKE FUNCTIONALITY
-  const toggleLike = (articleId) => {
-    setLikes((prev) => {
-      const isLiked = prev[articleId]?.liked || false;
-      const currentCount = prev[articleId]?.count || 0;
-
-      return {
-        ...prev,
-        [articleId]: {
-          liked: !isLiked,
-          count: isLiked ? currentCount - 1 : currentCount + 1,
-        },
-      };
-    });
   };
 
   const articleList = Array.isArray(articles) ? articles : [];
 
+
+
+
+const users = [
+  { _id: "1", name: "Alice", profession: "Developer" },
+  { _id: "2", name: "Bob", profession: "Designer" },
+];
+
+
+
+
+
+
   return (
     <div className="relative min-h-screen text-gray-800 font-sans bg-[url('./image1.png')] bg-cover bg-center">
       <div className={`${showLogout ? "blur-sm pointer-events-none" : ""}`}>
-        
+
         {/* ▓▒░ NAVBAR ░▒▓ */}
         <nav className="flex items-center justify-between border-b bg-white/20 backdrop-blur-md px-6 py-3 shadow-sm sticky top-0 z-40">
           <div>
@@ -405,15 +473,12 @@ function Home() {
 
             <button
               onClick={() => setShowLogout(true)}
-              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 justify-center   to-purple-800 text-white h-[35px] w-[100px] px-3 py-1.5 rounded-lg"
+              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 justify-center to-purple-800 text-white h-[35px] w-[100px] px-3 py-1.5 rounded-lg"
             >
               Logout
             </button>
 
-            <FaBell
-              className="text-xl cursor-pointer"
-              onClick={toggleNotifications}
-            />
+            <FaBell className="text-xl cursor-pointer" onClick={toggleNotifications} />
 
             <div
               onClick={() => navigate("/profile")}
@@ -431,44 +496,44 @@ function Home() {
           )}
 
           {articleList.map((article) => {
-            const allComments = article.comments || [];
-            const showAll = expandedComments[article._id];
-            const visibleComments = showAll ? allComments : allComments.slice(0, 2);
 
-            const likeState = likes[article._id] || { liked: false, count: 0 };
-            const totalLikes = (article.likeCount || 0) + likeState.count;
+            const totalComments = article.comments.length;
+            const visibleCount = showCount[article._id] || 5;
+            const commentsToShow = article.comments.slice(0, visibleCount);
 
             return (
               <div
                 key={article._id}
                 className="flex flex-col border rounded-2xl p-5 bg-white shadow-md hover:shadow-xl transition-shadow"
               >
+                <div className="mb-3 text-sm text-gray-500">
+                  Posted by: {article.user?.email || "Unknown User"} • {formatDate(article.createdAt)}
+                </div>
+
                 <h2 className="text-xl font-semibold">{article.title}</h2>
                 <p className="mt-2 text-gray-600">{article.content}</p>
 
-                {/* LIKE + COMMENTS */}
+                {/* LIKE + COMMENT ICONS */}
                 <div className="flex items-center justify-between mt-4 text-gray-600 text-sm">
-                  
-                  {/* COMMENTS CLICK → INPUT OPEN */}
+
+                  {/* COMMENT ICON */}
                   <div
                     className="flex items-center gap-2 cursor-pointer"
                     onClick={() => openCommentBox(article._id)}
                   >
                     <FaCommentAlt className="text-purple-500 text-xl" />
-                    <span >{allComments.length} Comments</span>
+                    <span>{totalComments} Comments</span>
                   </div>
 
                   {/* ❤️ LIKE BUTTON */}
                   <div
                     className="flex items-center gap-3 cursor-pointer text-xl"
-                    onClick={() => toggleLike(article._id)}
+                    onClick={() => dispatch(likeArticle(article._id))}
                   >
                     <FaHeart
-                      className={`text-xl transition  ${
-                        likeState.liked ? "text-red-500" : "text-gray-400"
-                      }`}
+                      className={`text-xl transition ${article.likedByCurrentUser ? "text-red-500" : "text-gray-400"}`}
                     />
-                    <span >{totalLikes}</span>
+                    <span>{article.likeCount}</span>
                   </div>
                 </div>
 
@@ -480,47 +545,45 @@ function Home() {
                       placeholder="Add a comment..."
                       className="flex-1 p-2 border rounded-lg bg-gray-100"
                       value={commentInputs[article._id] || ""}
-                      onChange={(e) =>
-                        handleCommentChange(article._id, e.target.value)
-                      }
+                      onChange={(e) => handleCommentChange(article._id, e.target.value)}
                     />
                     <button
-                      onClick={() => addComment(article._id)}
+                      onClick={() => handlePostComment(article._id)}
                       className="px-4 py-2 bg-blue-500 text-white rounded-lg"
                     >
-                      Send
+                      Post
                     </button>
                   </div>
                 )}
 
                 {/* COMMENTS LIST */}
                 <div className="mt-4 space-y-3">
-                  {visibleComments.map((c) => (
-                    <div
-                      key={c.id}
-                      className="p-3 bg-gray-100 rounded-lg border"
-                    >
+                  {commentsToShow.map((c) => (
+                    <div key={c._id} className="p-3 bg-gray-100 rounded-lg border">
                       <p>{c.text}</p>
-                      <p className="text-xs text-gray-500">{c.time}</p>
+                      <p className="text-xs text-gray-500">{formatDate(c.createdAt)}</p>
                     </div>
-                  ))}
+                   
+                  )  
+                  )}
+                  
 
-                  {allComments.length > 2 && (
+                  {/* READ MORE */}
+                  {visibleCount < totalComments && (
                     <button
-                      onClick={() => toggleShowMore(article._id)}
+                      onClick={() =>
+                        setShowCount((prev) => ({
+                          ...prev,
+                          [article._id]: (prev[article._id] || 5) + 5,
+                        }))
+                      }
                       className="text-blue-600 mt-1"
                     >
-                      {showAll
-                        ? "Show Less"
-                        : `Show More (${allComments.length - 2})`}
+                      Read More
                     </button>
                   )}
                 </div>
 
-                <div className="mt-4 text-sm text-gray-500">
-                  Posted by: {article.user?.email || "Unknown User"} •{" "}
-                  {formatDate(article.createdAt)}
-                </div>
               </div>
             );
           })}
@@ -536,6 +599,21 @@ function Home() {
       {showLogout && (
         <Logout onConfirm={handleLogout} onCancel={() => setShowLogout(false)} />
       )}
+
+
+
+<div className="p-6">
+      <h1 className="text-2xl font-bold mb-4 ">Users</h1>
+      {users.map((user) => (
+        <UserCard key={user._id} user={user} />
+      ))}
+    </div>
+    <Link to="./usercard"></Link>
+
+
+
+
+
     </div>
   );
 }

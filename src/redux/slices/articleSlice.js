@@ -59,6 +59,9 @@ export const commentArticle = createAsyncThunk(
   }
 );
 
+
+
+
 const articleSlice = createSlice({
   name: "articles",
   initialState,
@@ -92,19 +95,47 @@ const articleSlice = createSlice({
         state.error = action.payload;
       })
 
-      .addCase(likeArticle.fulfilled, (state, action) => {
-        const article = state.articles.find(a => a._id === action.payload.articleId);
-        if (article) {
-          article.likes = action.payload.data.likes; 
-        }
-      })
+      // .addCase(likeArticle.fulfilled, (state, action) => {
+      //   const article = state.articles.find(a => a._id === action.payload.articleId);
+      //   if (article) {
+      //   article.likeCount = action.payload.data.likeCount;
+      //   article.likedByCurrentUser = action.payload.data.likedByCurrentUser;
+      //   article.likedBy = action.payload.data.likedBy;
+      //   }
+      // })
 
-      .addCase(commentArticle.fulfilled, (state, action) => {
-        const article = state.articles.find(a => a._id === action.payload.articleId);
-        if (article) {
-          article.comments.push(action.payload.comment); 
+      // .addCase(commentArticle.fulfilled, (state, action) => {
+      //   const article = state.articles.find(a => a._id === action.payload.articleId);
+      //   if (article) {
+      //     article.comments.push(action.payload.comment); 
+      //   }
+      // });
+
+
+
+      .addCase(likeArticle.fulfilled, (state, action) => {
+    const { _id, likeCount, likedByCurrentUser, likedBy } = action.payload.data;
+
+    const article = state.articles.find(a => a._id === _id);
+    if (article) {
+        article.likeCount = likeCount;
+        article.likedByCurrentUser = likedByCurrentUser;
+        article.likedBy = likedBy;
+    }
+})
+
+
+.addCase(commentArticle.fulfilled, (state, action) => {
+    const { _id, comment } = action.payload.data;
+
+    const article = state.articles.find(a => a._id === _id);
+    if (article) {
+        if (!article.comments) {
+            article.comments = [];   // prevent undefined error
         }
-      });
+        article.comments.push(comment);
+    }
+});
   },
 });
 
