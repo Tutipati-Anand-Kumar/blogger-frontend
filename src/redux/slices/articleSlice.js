@@ -7,9 +7,7 @@ const initialState = {
   error: null,
 };
 
-/* ------------------------------------------------------
-   CREATE ARTICLE
------------------------------------------------------- */
+/* CREATE ARTICLE */
 export const createArticle = createAsyncThunk(
   "articles/create",
   async (payload, { rejectWithValue }) => {
@@ -24,14 +22,13 @@ export const createArticle = createAsyncThunk(
   }
 );
 
-/* ------------------------------------------------------
-   GET ALL ARTICLES
------------------------------------------------------- */
+/* GET ALL ARTICLES */
 export const getAllArticles = createAsyncThunk(
   "articles/getAll",
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await api.get("articles");
+      console.log(data)
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -41,20 +38,25 @@ export const getAllArticles = createAsyncThunk(
   }
 );
 
-/* ------------------------------------------------------
-   LIKE ARTICLE  ⭐ FIXED ⭐
------------------------------------------------------- */
+
+  //  LIKE ARTICLE  
+
 export const likeArticle = createAsyncThunk(
   "articles/like",
-  async (articleId, { rejectWithValue }) => {
+  async (articleId, { rejectWithValue, getState }) => {
     try {
       const { data } = await api.put(`articles/${articleId}/like`);
+      console.log(data)
+  
+      const state = getState();
+      const currentUserId = state.auth?.user?.user?._id;
 
-      // backend returns { message: "...", article: {...} }
       return {
         articleId,
-        data: data.article,
+        updatedArticle: data.article,
+        currentUserId,
       };
+
     } catch (err) {
       return rejectWithValue(
         err.response?.data?.message || "Failed to like article"
@@ -63,9 +65,7 @@ export const likeArticle = createAsyncThunk(
   }
 );
 
-/* ------------------------------------------------------
-   COMMENT ON ARTICLE
------------------------------------------------------- */
+/* COMMENT ON ARTICLE */
 export const commentArticle = createAsyncThunk(
   "articles/comment",
   async ({ articleId, text }, { rejectWithValue }) => {
@@ -80,9 +80,7 @@ export const commentArticle = createAsyncThunk(
   }
 );
 
-/* ------------------------------------------------------
-   SLICE
------------------------------------------------------- */
+/* SLICE */
 const articleSlice = createSlice({
   name: "articles",
   initialState,
@@ -116,46 +114,48 @@ const articleSlice = createSlice({
         state.error = action.payload;
       })
 
-      /* ------------------------------------------------------
-         LIKE ARTICLE  ⭐ FINAL FIXED VERSION ⭐
-      ------------------------------------------------------ */
+      /* LIKE ARTICLE  */
       .addCase(likeArticle.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
+
       .addCase(likeArticle.fulfilled, (state, action) => {
         state.status = "succeeded";
-
-        const { articleId, data } = action.payload;
-
+        const { articleId, updatedArticle, currentUserId } = action.payload;
         const article = state.articles.find((a) => a._id === articleId);
         if (article) {
-
-          // Get logged-in user ID from localStorage
-          const userId = localStorage.getItem("userId");
-
-          // Backend gives us: likedBy: [userIds]
-          const likedByCurrentUser = data.likedBy.includes(userId);
-
-          // Update article in Redux
-          article.likeCount = data.likeCount;
-          article.likedBy = data.likedBy;
-          article.likedByCurrentUser = likedByCurrentUser;
+          // Update article data from backend
+          article.likeCount = updatedArticle.likeCount;
+          article.likedBy = updatedArticle.likedBy;
+          article.likedByCurrentUser = updatedArticle.likedBy.includes(currentUserId);
         }
       })
+
       .addCase(likeArticle.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       })
 
       /* COMMENT */
+      .addCase(commentArticle.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+
       .addCase(commentArticle.fulfilled, (state, action) => {
+        state.status = "succeeded";
         const article = state.articles.find(
           (a) => a._id === action.payload.articleId
         );
         if (article) {
           article.comments.push(action.payload.comment);
         }
+      })
+
+      .addCase(commentArticle.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
       });
   },
 });
