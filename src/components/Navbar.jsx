@@ -185,7 +185,7 @@ const Navbar = () => {
                         </>
                     ) : (
                         <Link
-                            to="/login"
+                            to="/register"
                             className="px-6 py-2 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition-colors shadow-lg max-[650px]:px-4 max-[650px]:py-1.5 max-[650px]:text-sm"
                         >
                             Get Started
