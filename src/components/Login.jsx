@@ -49,7 +49,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="bg-white/20 backdrop-blur-xl shadow-2xl border border-white/30 rounded-2xl p-8 w-[90%] max-w-[420px] flex flex-col items-center justify-center transform hover:scale-105 transition-transform duration-300">
-        <h2 className="text-3xl font-semibold text-center bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 bg-clip-text text-transparent mb-6">
+        <h2 className="text-3xl font-semibold text-center bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 bg-clip-text text-transparent mb-6 max-[550px]:text-2xl">
           Login
         </h2>
 
@@ -89,14 +89,14 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 bg-gradient-to-r from-blue-500/80 to-purple-800/80 hover:from-purple-800 hover:to-blue-500 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer backdrop-blur-sm"
+            className="w-full py-2 bg-gradient-to-r from-blue-500/80 to-purple-800/80 hover:from-purple-800 hover:to-blue-500 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer backdrop-blur-sm max-[550px]:text-sm"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
         {/* Switch to Register */}
-        <div className="text-center mt-5 text-gray-800 font-medium">
+        <div className="text-center mt-5 text-gray-800 font-medium max-[550px]:text-sm">
           Don’t have an account?{" "}
           <Link
             to="/register"

@@ -112,7 +112,7 @@ const Register = () => {
         <div className="bg-white/20 backdrop-blur-xl shadow-2xl border border-white/30 rounded-2xl p-8 w-[90%] max-w-[850px] flex flex-col md:flex-row items-center justify-center gap-10">
           {/* Left side form */}
           <div className="w-full md:w-1/2">
-            <h2 className="text-3xl font-semibold text-center bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 bg-clip-text text-transparent mb-6">
+            <h2 className="text-3xl font-semibold text-center bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 bg-clip-text text-transparent mb-6 max-[550px]:text-2xl">
               Sign Up
             </h2>
 
@@ -207,13 +207,13 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-2 bg-gradient-to-r from-blue-500/80 to-purple-800/80 hover:from-purple-800 hover:to-blue-500 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm"
+                className="w-full py-2 bg-gradient-to-r from-blue-500/80 to-purple-800/80 hover:from-purple-800 hover:to-blue-500 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm max-[550px]:text-sm"
               >
                 {loading ? "Registering..." : "Register"}
               </button>
             </form>
 
-            <div className="text-center mt-5 text-gray-800 font-medium">
+            <div className="text-center mt-5 text-gray-800 font-medium max-[550px]:text-sm">
               Already have an account?{" "}
               <Link
                 to="/login"
