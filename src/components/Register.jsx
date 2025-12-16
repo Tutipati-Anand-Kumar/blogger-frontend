@@ -90,7 +90,7 @@ const Register = () => {
       await dispatch(registerUser(formData)).unwrap();
 
       toast.success("Registered successfully");
-      navigate("/login");
+      navigate("/");
 
       setDetails({
         username: "",
