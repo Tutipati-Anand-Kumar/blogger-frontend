@@ -143,8 +143,8 @@ const Profile = () => {
 
           {/* User Info & Stats */}
           <div className="flex-1 text-center md:text-left">
-            <h2 className="text-4xl font-extrabold text-white drop-shadow-md tracking-tight max-[650px]:text-2xl">{user.name}</h2>
-            <p className="text-lg text-white/90 font-medium mt-2 tracking-wide mb-6 max-[650px]:text-sm">{"MERN Stack Developer"}</p>
+            <h2 className="text-4xl font-extrabold text-gray-700 drop-shadow-md tracking-tight max-[650px]:text-2xl">{user.name}</h2>
+            <p className="text-lg text-green-600 font-medium mt-2 tracking-wide mb-6 max-[650px]:text-sm">{"MERN Stack Developer"}</p>
 
             {/* Stats Row */}
             <div className="flex flex-wrap justify-center md:justify-start gap-6 md:gap-10 border-t border-b border-white/20 py-4 max-w-xl">
