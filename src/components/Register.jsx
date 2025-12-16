@@ -108,7 +108,7 @@ const Register = () => {
   return (
     <>
       {/* MAIN PAGE */}
-      <div className="min-h-screen flex items-center justify-center py-10">
+      <div className="min-h-screen flex items-center justify-center py-10 max-[650px]:pt-20 max-[650px]:pb-10">
         <div className="bg-white/20 backdrop-blur-xl shadow-2xl border border-white/30 rounded-2xl p-8 w-[90%] max-w-[850px] flex flex-col md:flex-row items-center justify-center gap-10">
           {/* Left side form */}
           <div className="w-full md:w-1/2">
